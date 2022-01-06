@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 const main = () => {
-  process.stdin.resume()
+  process.stdin.resume();
 };
 main();
