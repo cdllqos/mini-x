@@ -10,21 +10,23 @@ export interface Config {
 
 let config: Config;
 
-export const initConfig = () => {
+export const getConfig = (): Readonly<Config> => {
   if (config) {
-    return;
+    return config;
   }
 
-  const projectConfig = fs.readJSONSync(PROJECT_CONFIG) as {
-    miniprogramRoot: string;
-  };
+  try {
+    const projectConfig = fs.readJSONSync(PROJECT_CONFIG) as {
+      miniprogramRoot: string;
+    };
+    config = {
+      miniprogramRoot: pathProxy.resolve(projectConfig.miniprogramRoot),
+      dist: pathProxy.resolve('dist'),
+    };
+  } catch (error) {
+    const errMsg = `make sure ${PROJECT_CONFIG} file exist`;
+    throw new Error(errMsg);
+  }
 
-  config = {
-    miniprogramRoot: pathProxy.resolve(projectConfig.miniprogramRoot),
-    dist: pathProxy.resolve('dist'),
-  };
-};
-
-export const getConfig = (): Readonly<Config> => {
   return config;
 };
