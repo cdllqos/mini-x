@@ -4,6 +4,7 @@ import { CopyDir } from '@src/enum/workspace-file';
 import { Subject } from 'rxjs';
 import { WATCH_FILE_EXTS } from '@src/constrants';
 import { getConfig } from '@src/config';
+import { unixPath } from '@src/utils/utils';
 
 export class Watcher {
   private fileChange$$ = new Subject<string>();
@@ -27,12 +28,12 @@ export class Watcher {
       ignored: ['**/node_modules', '**/.mini-x', '**/*.d.ts'],
     });
     const changeCallback = (f) => {
-      this.fileChange$$.next(f);
+      this.fileChange$$.next(unixPath(f));
     };
     watcher.on('add', changeCallback).on('change', changeCallback);
   }
 
   fileChange(fname: string) {
-    this.fileChange$$.next(fname);
+    this.fileChange$$.next(unixPath(fname));
   }
 }
