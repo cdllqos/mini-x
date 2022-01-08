@@ -16,8 +16,8 @@
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "lint-staged": "npx lint-staged",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "jest --clearCache && jest",
+    "test:watch": "jest --clearCache && jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
@@ -56,7 +56,8 @@
     ],
     "rootDir": "test",
     "moduleNameMapper": {
-      "^@src/(.*)": "<rootDir>/../src/$1"
+      "^@src/(.*)": "<rootDir>/../src/$1",
+      "^@test/(.*)": "<rootDir>/$1"
     },
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
