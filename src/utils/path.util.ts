@@ -1,6 +1,8 @@
 import * as path from 'path';
 
-import { unixPath } from './utils';
+export const unixPath = (path: string) => {
+  return path.replaceAll('\\', '/');
+};
 
 export const pathProxy = new Proxy(path, {
   get: function (target: path.PlatformPath, key: string) {

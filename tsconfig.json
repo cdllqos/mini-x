@@ -6,7 +6,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "lib": ["ESNext"],
+    "lib": ["ESNext", "DOM"],
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",

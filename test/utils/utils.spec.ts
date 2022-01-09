@@ -1,10 +1,17 @@
-import * as path from 'path';
+import { pathProxy, unixPath } from '@src/utils/path.util';
 
-import { unixPath } from '@src/utils/utils';
+import { NODE_MODULES } from '@src/constrants';
+import { getMiniProgramInfo } from '@src/utils/utils';
 
 describe('test utils file', () => {
-  it('test unixPath method', () => {
-    const r = unixPath(path.resolve());
-    expect(r.includes('\\')).toEqual(false);
+  it('test getMiniProgramInfo method', () => {
+    const r = getMiniProgramInfo(
+      pathProxy.resolve(NODE_MODULES, 'tdesign-miniprogram', 'test-path'),
+    );
+    const expected = {
+      packageName: 'tdesign-miniprogram',
+      miniprogram: 'miniprogram_dist',
+    };
+    expect(r).toEqual(expected);
   });
 });
