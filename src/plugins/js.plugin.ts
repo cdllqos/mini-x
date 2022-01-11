@@ -5,6 +5,7 @@ import {
   getLibImportedtFiles,
   getLibTarget,
   getThirdImports,
+  packThirdLib,
 } from '@src/utils/compiler.util';
 
 import { BasePlugin } from './base.plugin';
@@ -46,14 +47,14 @@ export class JsPlugin extends BasePlugin {
         ? packageName + '.js'
         : packageName + '/index.js';
 
-      const target = pathProxy.resolve(
-        getConfig().miniprogramRoot,
-        MINI_X_TEMP,
-        fileName,
-      );
+      const { miniprogramRoot, dist } = getConfig();
+      const libPath = pathProxy.resolve(miniprogramRoot, MINI_X_TEMP, fileName);
       const content = getExportContent(packageName, getJsImports(packageName));
-      fsUtil.outputFile(target, content);
-      // TODO: esbuild
+      const packageDir = packageName.split('/')[0];
+      const outDir = pathProxy.resolve(dist, MINI_PROGRAM_NPM, packageDir);
+
+      fsUtil.outputFileSync(libPath, content);
+      packThirdLib(libPath, outDir);
     });
   }
 }

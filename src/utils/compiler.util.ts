@@ -8,8 +8,8 @@ import {
 import { MINI_PROGRAM_NPM, NODE_MODULES } from '@src/constrants';
 import { ThirdImports, VoidCallback } from '@src/models';
 
-import { JSImportMap } from '@src/state/js.state';
 import { Visitor } from '@swc/core/Visitor.js';
+import { build } from 'esbuild';
 import { getConfig } from '@src/config';
 import { getMiniProgramInfo } from './utils';
 import { pathProxy } from './path.util';
@@ -185,4 +185,14 @@ export const getExportContent = (
   const tsContent =
     `import { ${importContent} } from '${packageName}';\n` + exportContent;
   return tsContent;
+};
+
+export const packThirdLib = (entry: string, outDir: string) => {
+  build({
+    entryPoints: [entry],
+    bundle: true,
+    outdir: outDir,
+    platform: 'browser',
+    format: 'esm',
+  });
 };
