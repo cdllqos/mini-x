@@ -8,5 +8,5 @@ export interface MiniProgramInfo {
 
 export interface ThirdImports {
   packageName: string;
-  imports: string[];
+  identifiers: string[];
 }

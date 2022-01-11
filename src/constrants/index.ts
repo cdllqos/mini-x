@@ -14,4 +14,4 @@ export const PROJECT_CONFIG = pathProxy.resolve('./project.config.json');
 export const MINI_PROGRAM_NPM = 'miniprogram_npm';
 
 export const NODE_MODULES = 'node_modules';
-export const MINI_X_TEMP = pathProxy.resolve('.mini-x');
+export const MINI_X_TEMP = '.mini-x';

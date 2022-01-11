@@ -1,4 +1,5 @@
-const jsImportMap = new Map<string, Set<string>>();
+export type JSImportMap = Map<string, Set<string>>;
+const jsImportMap: JSImportMap = new Map();
 
 export const addJsImport = (
   packageName: string,

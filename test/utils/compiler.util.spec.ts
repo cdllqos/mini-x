@@ -1,10 +1,12 @@
 import {
+  getExportContent,
   getLibImportedtFiles,
   getThirdImports,
   getTranspileContent,
 } from '@src/utils/compiler.util';
 
 import { NODE_MODULES } from '@src/constrants';
+import { fsUtil } from '@src/utils/file.util';
 import { pathProxy } from '@src/utils/path.util';
 
 describe('test compiler util', () => {
@@ -36,7 +38,17 @@ console.log('map: ', map);
   it('test getThirdImports method', () => {
     const fname = pathProxy.resolve(__dirname, 'compiler-test-file.ts');
     const r = getThirdImports(fname);
-    const expected = [{ packageName: 'rxjs/operators', imports: ['map'] }];
+    const expected = [{ packageName: 'rxjs/operators', identifiers: ['map'] }];
+    expect(r).toEqual(expected);
+  });
+
+  it('test getExportContent method', () => {
+    const r = getExportContent('rxjs', new Set(['map', 'filter', 'debounce']));
+    const expected = `import { map, filter, debounce } from 'rxjs';
+export { map }
+export { filter }
+export { debounce }
+`;
     expect(r).toEqual(expected);
   });
 });

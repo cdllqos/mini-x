@@ -8,6 +8,7 @@ import {
 import { MINI_PROGRAM_NPM, NODE_MODULES } from '@src/constrants';
 import { ThirdImports, VoidCallback } from '@src/models';
 
+import { JSImportMap } from '@src/state/js.state';
 import { Visitor } from '@swc/core/Visitor.js';
 import { getConfig } from '@src/config';
 import { getMiniProgramInfo } from './utils';
@@ -163,10 +164,25 @@ export const getThirdImports = (fname: string): ThirdImports[] => {
         (packageName: string, imports: string[]) => {
           importsMap.push({
             packageName,
-            imports,
+            identifiers: imports,
           });
         },
       ).visitProgram(m),
   });
   return importsMap;
+};
+
+export const getExportContent = (
+  packageName: string,
+  identifiers: Set<string>,
+) => {
+  const importContent = Array.from(identifiers.values()).join(', ');
+  const exportContent = Array.from(identifiers.values())
+    .map((e) => {
+      return `export { ${e} }\n`;
+    })
+    .join('');
+  const tsContent =
+    `import { ${importContent} } from '${packageName}';\n` + exportContent;
+  return tsContent;
 };
