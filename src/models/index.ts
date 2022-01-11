@@ -5,3 +5,8 @@ export interface MiniProgramInfo {
   packageName: string;
   miniprogram: string;
 }
+
+export interface ThirdImports {
+  packageName: string;
+  imports: string[];
+}

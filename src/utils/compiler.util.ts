@@ -2,12 +2,13 @@ import {
   ExportAllDeclaration,
   ImportDeclaration,
   ModuleDeclaration,
+  NamedImportSpecifier,
   transformFileSync,
 } from '@swc/core';
 import { MINI_PROGRAM_NPM, NODE_MODULES } from '@src/constrants';
+import { ThirdImports, VoidCallback } from '@src/models';
 
 import { Visitor } from '@swc/core/Visitor.js';
-import { VoidCallback } from '@src/models';
 import { getConfig } from '@src/config';
 import { getMiniProgramInfo } from './utils';
 import { pathProxy } from './path.util';
@@ -56,6 +57,36 @@ class ImportCollectVisitor extends Visitor {
 
   visitExportAllDeclaration(n: ExportAllDeclaration): ExportAllDeclaration {
     return this.pickPackName(n) as ExportAllDeclaration;
+  }
+}
+
+class GetThirdImportVisitor extends Visitor {
+  private callback: VoidCallback;
+  private fname: string;
+
+  constructor(fname: string, callback: VoidCallback) {
+    super();
+    this.callback = callback;
+    this.fname = fname;
+  }
+
+  visitImportDeclaration(n: ImportDeclaration): ImportDeclaration {
+    const packageName = n.source.value;
+    if (this.fname.includes(NODE_MODULES) || packageName.startsWith('.')) {
+      return n;
+    }
+
+    const imports = n.specifiers
+      .filter((m) => m.type === 'ImportSpecifier')
+      .map((i: NamedImportSpecifier) => {
+        if (i.imported) {
+          return i.imported.value;
+        }
+        return i.local.value;
+      });
+
+    this.callback(packageName, imports);
+    return n;
   }
 }
 
@@ -111,4 +142,31 @@ export const getLibTarget = (fname: string) => {
     relativePath,
   );
   return target;
+};
+
+export const getThirdImports = (fname: string): ThirdImports[] => {
+  const importsMap: ThirdImports[] = [];
+  transformFileSync(fname, {
+    sourceMaps: false,
+    jsc: {
+      parser: {
+        syntax: 'typescript',
+        tsx: false,
+      },
+    },
+    module: {
+      type: 'es6',
+    },
+    plugin: (m) =>
+      new GetThirdImportVisitor(
+        fname,
+        (packageName: string, imports: string[]) => {
+          importsMap.push({
+            packageName,
+            imports,
+          });
+        },
+      ).visitProgram(m),
+  });
+  return importsMap;
 };
