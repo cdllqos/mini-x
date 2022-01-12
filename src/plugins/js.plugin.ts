@@ -11,15 +11,13 @@ import {
 import { BasePlugin } from './base.plugin';
 import { Watcher } from '@src/core/watcher';
 import { WorkspaceFile } from '@src/enum/workspace-file';
+import { buildFileExtMatcher } from '@src/utils/plugin.util';
 import { fsUtil } from '@src/utils/file.util';
 import { getConfig } from '@src/config';
 import { pathProxy } from '@src/utils/path.util';
 
 export class JsPlugin extends BasePlugin {
-  matcher(fname: string): boolean {
-    const fileExt = pathProxy.extname(fname).replace('.', '');
-    return WorkspaceFile[fileExt] === WorkspaceFile.js;
-  }
+  matcher = buildFileExtMatcher(WorkspaceFile.js);
 
   onFileChange(fname: string, watcher: Watcher): void {
     if (!fname.includes(NODE_MODULES)) {
