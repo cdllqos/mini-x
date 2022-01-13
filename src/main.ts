@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { JsPlugin } from './plugins/js.plugin';
+import { JsonPlugin } from './plugins/json.plugin';
 import { MiniXCore } from './core/core';
 import { TsPlugin } from './plugins/ts.plugin';
 import { WxmlPlugin } from './plugins/wxml.plugin';
@@ -13,6 +14,7 @@ const main = () => {
   core.registerPlugin(TsPlugin);
   core.registerPlugin(JsPlugin);
   core.registerPlugin(WxmlPlugin);
+  core.registerPlugin(JsonPlugin);
   core.bootstrap();
   process.stdin.resume();
 };

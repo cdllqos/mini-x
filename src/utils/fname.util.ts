@@ -11,7 +11,8 @@ export const getStaticTarget = (fname: string) => {
   }
 
   const relativePath = getRelativePath(fname);
-  return pathProxy.resolve(dist, MINI_PROGRAM_NPM, relativePath);
+  const { packageName } = getMiniProgramInfo(fname);
+  return pathProxy.resolve(dist, MINI_PROGRAM_NPM, packageName, relativePath);
 };
 
 export const getRelativePath = (fname: string) => {
