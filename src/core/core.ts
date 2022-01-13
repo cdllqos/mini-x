@@ -1,5 +1,8 @@
 import { BasePlugin } from '@src/plugins/base.plugin';
 import { Watcher } from './watcher';
+import { fsUtil } from '@src/utils/file.util';
+import { getConfig } from '@src/config';
+import { pathProxy } from '@src/utils/path.util';
 
 type Ctr = new () => BasePlugin;
 
@@ -8,6 +11,7 @@ export class MiniXCore {
   private watcher: Watcher;
 
   bootstrap() {
+    fsUtil.removeSync(pathProxy.resolve(getConfig().dist));
     this.watcher = new Watcher();
     this.watcher.fileChange$.subscribe((fname) => {
       this.plugins.forEach((plugin) => {
