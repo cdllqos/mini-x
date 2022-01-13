@@ -13,7 +13,11 @@ export class JsonPlugin extends BasePlugin {
   onFileChange(fname: string, watcher: Watcher): void {
     const target = getStaticTarget(fname);
     fsUtil.copySync(fname, target);
-    this.analysisJson(fname, watcher);
+    try {
+      this.analysisJson(fname, watcher);
+    } catch (error) {
+      console.log('error: ', error);
+    }
   }
 
   private analysisJson(fname: string, watcher: Watcher) {
