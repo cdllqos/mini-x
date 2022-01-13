@@ -21,7 +21,7 @@ export class JsonPlugin extends BasePlugin {
   }
 
   private analysisJson(fname: string, watcher: Watcher) {
-    const { usingComponents } = require(fname) as {
+    const { usingComponents } = fsUtil.readJsonSync(fname) as {
       usingComponents: { [k: string]: string };
     };
 

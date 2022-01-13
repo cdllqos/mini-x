@@ -20,6 +20,7 @@ export class WxmlPlugin extends BasePlugin {
     const content = fsUtil.readFileSync(fname);
     const root = parse(content.toString());
     const wxsTags = root.querySelectorAll('wxs');
+
     wxsTags.forEach((node) => {
       const src = node.getAttribute('src');
       if (!src) {

@@ -5,6 +5,7 @@ import { JsonPlugin } from './plugins/json.plugin';
 import { MiniXCore } from './core/core';
 import { TsPlugin } from './plugins/ts.plugin';
 import { WxmlPlugin } from './plugins/wxml.plugin';
+import { WxsPlugin } from './plugins/wxs.plugin';
 import { WxssPlugin } from './plugins/wxss.plugin';
 
 const main = () => {
@@ -15,6 +16,7 @@ const main = () => {
   core.registerPlugin(JsPlugin);
   core.registerPlugin(WxmlPlugin);
   core.registerPlugin(JsonPlugin);
+  core.registerPlugin(WxsPlugin);
   core.bootstrap();
   process.stdin.resume();
 };
