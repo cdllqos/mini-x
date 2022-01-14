@@ -1,17 +1,21 @@
 {
   "name": "@cdllqos/mini-x",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "A tool for building miniapp more quickly",
   "author": "cdllqos",
   "license": "MIT",
   "bin": {
     "mini-x": "dist/main.js"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
-    "prebuild": "node scripts/prebuild.js",
     "build": "nest build",
     "build:watch": "nest build --watch",
-    "prepublish": "npm run build && cd dist && npm publish",
+    "prepublish": "npm run build",
+    "publish": "npm publish",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
