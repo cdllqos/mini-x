@@ -1,11 +1,25 @@
 {
   "name": "@cdllqos/mini-x",
-  "version": "0.0.10",
+  "version": "0.1.1",
   "description": "A tool for building miniapp more quickly",
   "author": "cdllqos",
   "license": "MIT",
   "bin": {
     "mini-x": "dist/main.js"
+  },
+  "repository": {
+    "url": "https://github.com/cdllqos/mini-x",
+    "type": "git"
+  },
+  "keywords": [
+    "miniapp",
+    "miniprogram",
+    "typescript",
+    "ts",
+    "cli"
+  ],
+  "bugs": {
+    "url": "https://github.com/cdllqos/mini-x/issues"
   },
   "files": [
     "dist",
