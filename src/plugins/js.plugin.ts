@@ -41,10 +41,13 @@ export class JsPlugin extends BasePlugin {
     });
 
     new Set(thirdImports.map((m) => m.packageName)).forEach((packageName) => {
+      if (this.jsComponentImport(packageName, watcher)) {
+        return;
+      }
+
       const fileName = packageName.includes('/')
         ? packageName + '.js'
         : packageName + '/index.js';
-
       const { miniprogramRoot, dist } = getConfig();
       const libPath = pathProxy.resolve(miniprogramRoot, MINI_X_TEMP, fileName);
       const content = getExportContent(packageName, getJsImports(packageName));
@@ -54,5 +57,33 @@ export class JsPlugin extends BasePlugin {
       fsUtil.outputFileSync(libPath, content);
       packThirdLib(libPath, outDir);
     });
+  }
+
+  private jsComponentImport(path: string, watcher: Watcher) {
+    const splits = path.split('/');
+    const packageName = splits[0];
+    const packageJsonPath = pathProxy.resolve(
+      NODE_MODULES,
+      packageName,
+      'package.json',
+    );
+
+    if (!fsUtil.existsSync(packageJsonPath)) {
+      return false;
+    }
+
+    const { miniprogram } = require(packageJsonPath) as {
+      miniprogram: string;
+    };
+
+    if (!miniprogram) {
+      return false;
+    }
+
+    splits.splice(1, 0, miniprogram);
+    const relativePath = splits.join('/');
+    const basePath = pathProxy.resolve(NODE_MODULES, relativePath);
+    watcher.fileChange(`${basePath}.js`);
+    return true;
   }
 }

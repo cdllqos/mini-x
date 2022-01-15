@@ -29,5 +29,16 @@ export class WxmlPlugin extends BasePlugin {
       const wxsPath = pathProxy.resolve(pathProxy.dirname(fname), src);
       watcher.fileChange(wxsPath);
     });
+
+    const importTags = root.querySelectorAll('import');
+
+    importTags.forEach((node) => {
+      const src = node.getAttribute('src');
+      if (!src) {
+        throw new Error(`cant't find src in this node: ${node.outerHTML}`);
+      }
+      const importPath = pathProxy.resolve(pathProxy.dirname(fname), src);
+      watcher.fileChange(importPath);
+    });
   }
 }
