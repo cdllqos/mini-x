@@ -1,9 +1,12 @@
 import { MINI_PROGRAM_NPM, MINI_X_TEMP, NODE_MODULES } from '@src/constrants';
-import { addJsImport, getJsImports } from '@src/state/js.state';
+import {
+  addJsImport,
+  getJsImports,
+  hasCopiedLib,
+  setCopiedLib,
+} from '@src/state/js.state';
 import {
   getExportContent,
-  getLibImportedtFiles,
-  getLibTarget,
   getThirdImports,
   packThirdLib,
 } from '@src/utils/compiler.util';
@@ -12,6 +15,7 @@ import { BasePlugin } from './base.plugin';
 import { Watcher } from '@src/core/watcher';
 import { WorkspaceFile } from '@src/enum/workspace-file';
 import { buildFileExtMatcher } from '@src/utils/plugin.util';
+import { copyLib } from '@src/utils/fname.util';
 import { fsUtil } from '@src/utils/file.util';
 import { getConfig } from '@src/config';
 import { pathProxy } from '@src/utils/path.util';
@@ -20,17 +24,12 @@ export class JsPlugin extends BasePlugin {
   matcher = buildFileExtMatcher(WorkspaceFile.js);
 
   onFileChange(fname: string, watcher: Watcher): void {
-    if (!fname.includes(NODE_MODULES)) {
-      this.bundleLib(fname, watcher);
-      return;
+    if (fname.includes(NODE_MODULES)) {
+      throw new Error(
+        `can't get static target when fanme includes ${NODE_MODULES}, fname is:${fname}`,
+      );
     }
-
-    const target = getLibTarget(fname);
-    fsUtil.copySync(fname, target);
-    const imports = getLibImportedtFiles(fname);
-    imports.forEach((f) => {
-      watcher.fileChange(f);
-    });
+    this.bundleLib(fname, watcher);
   }
 
   private bundleLib(fname: string, watcher: Watcher) {
@@ -80,10 +79,13 @@ export class JsPlugin extends BasePlugin {
       return false;
     }
 
-    splits.splice(1, 0, miniprogram);
-    const relativePath = splits.join('/');
-    const basePath = pathProxy.resolve(NODE_MODULES, relativePath);
-    watcher.fileChange(`${basePath}.js`);
+    if (hasCopiedLib(packageName)) {
+      return true;
+    }
+
+    copyLib(packageName);
+    setCopiedLib(packageName);
+
     return true;
   }
 }

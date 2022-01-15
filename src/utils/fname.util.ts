@@ -1,18 +1,19 @@
 import { MINI_PROGRAM_NPM, NODE_MODULES } from '@src/constrants';
 
+import { fsUtil } from './file.util';
 import { getConfig } from '@src/config';
 import { getMiniProgramInfo } from './utils';
 import { pathProxy } from './path.util';
 
 export const getStaticTarget = (fname: string) => {
   const { miniprogramRoot, dist } = getConfig();
-  if (!fname.includes(NODE_MODULES)) {
-    return fname.replaceAll(miniprogramRoot, dist);
+  if (fname.includes(NODE_MODULES)) {
+    throw new Error(
+      `can't get static target when fanme includes ${NODE_MODULES}, fname is:${fname}`,
+    );
   }
 
-  const relativePath = getRelativePath(fname);
-  const { packageName } = getMiniProgramInfo(fname);
-  return pathProxy.resolve(dist, MINI_PROGRAM_NPM, packageName, relativePath);
+  return fname.replaceAll(miniprogramRoot, dist);
 };
 
 export const getRelativePath = (fname: string) => {
@@ -24,4 +25,23 @@ export const getRelativePath = (fname: string) => {
   const basePath =
     pathProxy.resolve(NODE_MODULES, packageName, miniprogram) + '/';
   return fname.replace(basePath, '');
+};
+
+export const copyLib = (packageName) => {
+  const dirPath = pathProxy.resolve(NODE_MODULES, packageName);
+  if (!fsUtil.existsSync(dirPath)) {
+    throw new Error(`can't find "${packageName}" package`);
+  }
+
+  const { miniprogram } = require(pathProxy.resolve(dirPath, 'package.json'));
+
+  if (!miniprogram) {
+    throw new Error(`${packageName} is not miniprogram lib`);
+  }
+
+  const { dist } = getConfig();
+  fsUtil.copySync(
+    `${dirPath}/${miniprogram}`,
+    pathProxy.resolve(dist, MINI_PROGRAM_NPM, packageName),
+  );
 };
