@@ -18,7 +18,7 @@ export const getConfig = (): Readonly<Config> => {
   }
 
   try {
-    const { miniprogramRoot, cloudfunctionRoot } = fs.readJSONSync(
+    const { miniprogramRoot, cloudfunctionRoot = '' } = fs.readJSONSync(
       PROJECT_CONFIG,
     ) as {
       miniprogramRoot: string;

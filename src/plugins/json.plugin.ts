@@ -4,11 +4,11 @@ import { hasCopiedLib, setCopiedLib } from '@src/state/js.state';
 import { BasePlugin } from './base.plugin';
 import { Watcher } from '@src/core/watcher';
 import { WorkspaceFile } from '@src/enum/workspace-file';
-import { buildFileExtMatcher } from '@src/utils/plugin.util';
+import { buildClientFileExtMatcher } from '@src/utils/plugin.util';
 import { fsUtil } from '@src/utils/file.util';
 
 export class JsonPlugin extends BasePlugin {
-  matcher = buildFileExtMatcher(WorkspaceFile.json);
+  matcher = buildClientFileExtMatcher(WorkspaceFile.json);
 
   onFileChange(fname: string, watcher: Watcher): void {
     const target = getStaticTarget(fname);
