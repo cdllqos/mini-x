@@ -7,6 +7,7 @@ describe('test fname util', () => {
   beforeAll(() => {
     mockGetConfig({
       miniprogramRoot: pathProxy.resolve('src'),
+      cloudfunctionRoot: pathProxy.resolve('cloudFunction'),
       dist: pathProxy.resolve('dist'),
       miniprogramTarget: pathProxy.resolve('dist', 'miniprogram'),
       cloudFunctionTarget: pathProxy.resolve('dist', 'cloudFunction'),
