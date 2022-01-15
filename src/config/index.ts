@@ -5,6 +5,7 @@ import { pathProxy } from '@src/utils/path.util';
 
 export interface Config {
   miniprogramRoot: string;
+  cloudfunctionRoot: string;
   dist: string;
   miniprogramTarget: string;
   cloudFunctionTarget: string;
@@ -27,6 +28,7 @@ export const getConfig = (): Readonly<Config> => {
 
     config = {
       miniprogramRoot: pathProxy.resolve(miniprogramRoot),
+      cloudfunctionRoot: pathProxy.resolve(cloudfunctionRoot),
       dist: pathProxy.resolve('dist'),
       miniprogramTarget: pathProxy.resolve('dist', miniprogramRoot),
       cloudFunctionTarget: pathProxy.resolve('dist', cloudfunctionRoot),

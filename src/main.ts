@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { CloudFunctionPlugin } from './plugins/cloud-function.plugin';
 import { JsPlugin } from './plugins/js.plugin';
 import { JsonPlugin } from './plugins/json.plugin';
 import { MiniXCore } from './core/core';
@@ -17,6 +18,7 @@ const main = () => {
   core.registerPlugin(WxmlPlugin);
   core.registerPlugin(JsonPlugin);
   core.registerPlugin(WxsPlugin);
+  core.registerPlugin(CloudFunctionPlugin);
   core.bootstrap();
   process.stdin.resume();
 };
