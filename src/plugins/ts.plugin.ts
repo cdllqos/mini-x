@@ -1,18 +1,20 @@
 import { BasePlugin } from './base.plugin';
 import { Watcher } from '@src/core/watcher';
 import { WorkspaceFile } from '@src/enum/workspace-file';
-import { buildFileExtMatcher } from '@src/utils/plugin.util';
+import { buildClientFileExtMatcher } from '@src/utils/plugin.util';
 import { fsUtil } from '@src/utils/file.util';
 import { getConfig } from '@src/config';
 import { getTranspileContent } from '@src/utils/compiler.util';
 
 export class TsPlugin extends BasePlugin {
-  matcher = buildFileExtMatcher(WorkspaceFile.ts);
+  matcher = buildClientFileExtMatcher(WorkspaceFile.ts);
 
   onFileChange(fname: string, watcher: Watcher): void {
     const tsContent = getTranspileContent(fname);
-    const { miniprogramRoot, dist } = getConfig();
-    const target = fname.replace(miniprogramRoot, dist).replace('.ts', '.js');
+    const { miniprogramRoot, miniprogramTarget } = getConfig();
+    const target = fname
+      .replace(miniprogramRoot, miniprogramTarget)
+      .replace('.ts', '.js');
     fsUtil.outputFileSync(target, tsContent);
     watcher.fileChange(target);
   }

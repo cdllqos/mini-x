@@ -6,14 +6,14 @@ import { getMiniProgramInfo } from './utils';
 import { pathProxy } from './path.util';
 
 export const getStaticTarget = (fname: string) => {
-  const { miniprogramRoot, dist } = getConfig();
+  const { miniprogramRoot, miniprogramTarget } = getConfig();
   if (fname.includes(NODE_MODULES)) {
     throw new Error(
       `can't get static target when fanme includes ${NODE_MODULES}, fname is:${fname}`,
     );
   }
 
-  return fname.replaceAll(miniprogramRoot, dist);
+  return fname.replaceAll(miniprogramRoot, miniprogramTarget);
 };
 
 export const getRelativePath = (fname: string) => {
@@ -39,9 +39,9 @@ export const copyLib = (packageName) => {
     throw new Error(`${packageName} is not miniprogram lib`);
   }
 
-  const { dist } = getConfig();
+  const { miniprogramTarget } = getConfig();
   fsUtil.copySync(
     `${dirPath}/${miniprogram}`,
-    pathProxy.resolve(dist, MINI_PROGRAM_NPM, packageName),
+    pathProxy.resolve(miniprogramTarget, MINI_PROGRAM_NPM, packageName),
   );
 };

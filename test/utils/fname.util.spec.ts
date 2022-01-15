@@ -8,6 +8,8 @@ describe('test fname util', () => {
     mockGetConfig({
       miniprogramRoot: pathProxy.resolve('src'),
       dist: pathProxy.resolve('dist'),
+      miniprogramTarget: pathProxy.resolve('dist', 'miniprogram'),
+      cloudFunctionTarget: pathProxy.resolve('dist', 'cloudFunction'),
     });
   });
 
@@ -17,7 +19,7 @@ describe('test fname util', () => {
 
   it('test getStaticTarget method', () => {
     const r = getStaticTarget(pathProxy.resolve('src/page/index/index.wxss'));
-    const expected = 'dist/page/index/index.wxss';
+    const expected = 'miniprogram/page/index/index.wxss';
     expect(r.includes(expected)).toEqual(true);
   });
 

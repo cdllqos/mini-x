@@ -14,14 +14,14 @@ import {
 import { BasePlugin } from './base.plugin';
 import { Watcher } from '@src/core/watcher';
 import { WorkspaceFile } from '@src/enum/workspace-file';
-import { buildFileExtMatcher } from '@src/utils/plugin.util';
+import { buildClientFileExtMatcher } from '@src/utils/plugin.util';
 import { copyLib } from '@src/utils/fname.util';
 import { fsUtil } from '@src/utils/file.util';
 import { getConfig } from '@src/config';
 import { pathProxy } from '@src/utils/path.util';
 
 export class JsPlugin extends BasePlugin {
-  matcher = buildFileExtMatcher(WorkspaceFile.js);
+  matcher = buildClientFileExtMatcher(WorkspaceFile.js);
 
   onFileChange(fname: string, watcher: Watcher): void {
     if (fname.includes(NODE_MODULES)) {
@@ -47,11 +47,15 @@ export class JsPlugin extends BasePlugin {
       const fileName = packageName.includes('/')
         ? packageName + '.js'
         : packageName + '/index.js';
-      const { miniprogramRoot, dist } = getConfig();
+      const { miniprogramRoot, miniprogramTarget } = getConfig();
       const libPath = pathProxy.resolve(miniprogramRoot, MINI_X_TEMP, fileName);
       const content = getExportContent(packageName, getJsImports(packageName));
       const packageDir = packageName.split('/')[0];
-      const outDir = pathProxy.resolve(dist, MINI_PROGRAM_NPM, packageDir);
+      const outDir = pathProxy.resolve(
+        miniprogramTarget,
+        MINI_PROGRAM_NPM,
+        packageDir,
+      );
 
       fsUtil.outputFileSync(libPath, content);
       packThirdLib(libPath, outDir);

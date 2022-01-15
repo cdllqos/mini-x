@@ -137,7 +137,7 @@ export const getLibTarget = (fname: string) => {
   );
   const relativePath = fname.replace(miniprogramRoot + '/', '');
   const target = pathProxy.resolve(
-    getConfig().dist,
+    getConfig().miniprogramTarget,
     MINI_PROGRAM_NPM,
     packageName,
     relativePath,
