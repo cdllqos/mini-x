@@ -11,8 +11,10 @@ export class TsPlugin extends BasePlugin {
 
   onFileChange(fname: string, watcher: Watcher): void {
     const tsContent = getTranspileContent(fname);
-    const { miniprogramRoot, dist } = getConfig();
-    const target = fname.replace(miniprogramRoot, dist).replace('.ts', '.js');
+    const { miniprogramRoot, miniprogramTarget } = getConfig();
+    const target = fname
+      .replace(miniprogramRoot, miniprogramTarget)
+      .replace('.ts', '.js');
     fsUtil.outputFileSync(target, tsContent);
     watcher.fileChange(target);
   }

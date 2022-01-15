@@ -47,11 +47,15 @@ export class JsPlugin extends BasePlugin {
       const fileName = packageName.includes('/')
         ? packageName + '.js'
         : packageName + '/index.js';
-      const { miniprogramRoot, dist } = getConfig();
+      const { miniprogramRoot, miniprogramTarget } = getConfig();
       const libPath = pathProxy.resolve(miniprogramRoot, MINI_X_TEMP, fileName);
       const content = getExportContent(packageName, getJsImports(packageName));
       const packageDir = packageName.split('/')[0];
-      const outDir = pathProxy.resolve(dist, MINI_PROGRAM_NPM, packageDir);
+      const outDir = pathProxy.resolve(
+        miniprogramTarget,
+        MINI_PROGRAM_NPM,
+        packageDir,
+      );
 
       fsUtil.outputFileSync(libPath, content);
       packThirdLib(libPath, outDir);
