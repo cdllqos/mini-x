@@ -24,6 +24,7 @@ export const getRelativePath = (fname: string) => {
   if (!fname.includes(NODE_MODULES)) {
     throw new Error(`expect fname includes ${NODE_MODULES}`);
   }
+
   const { miniprogram, packageName } = getMiniProgramInfo(fname);
   const basePath =
     pathProxy.resolve(NODE_MODULES, packageName, miniprogram) + '/';

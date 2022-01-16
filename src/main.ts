@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { AssetsPlugin } from './plugins/assets.plugin';
 import { CloudFunctionPlugin } from './plugins/cloud-function.plugin';
 import { JsPlugin } from './plugins/js.plugin';
 import { JsonPlugin } from './plugins/json.plugin';
@@ -21,6 +22,7 @@ const main = () => {
     WxsPlugin,
     CloudFunctionPlugin,
     SassPlugin,
+    AssetsPlugin,
   ];
 
   plugins.forEach((plugin) => {
