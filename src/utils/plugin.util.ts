@@ -1,3 +1,4 @@
+import { NODE_MODULES } from '@src/constrants';
 import { WorkspaceFile } from '@src/enum/workspace-file';
 import { getConfig } from '@src/config';
 import { pathProxy } from '@src/utils/path.util';
@@ -7,7 +8,7 @@ export const buildClientFileExtMatcher = (workspaceFile: WorkspaceFile) => {
     const fileExt = pathProxy.extname(fname).replace('.', '');
     const { miniprogramRoot } = getConfig();
     return (
-      fname.includes(miniprogramRoot) &&
+      (fname.includes(miniprogramRoot) || fname.includes(NODE_MODULES)) &&
       WorkspaceFile[fileExt] === workspaceFile
     );
   };
