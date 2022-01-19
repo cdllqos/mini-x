@@ -16,7 +16,11 @@ export class MiniXCore {
     this.watcher.fileChange$.subscribe((fname) => {
       this.plugins.forEach((plugin) => {
         if (plugin.matcher(fname)) {
-          plugin.onFileChange(fname, this.watcher);
+          try {
+            plugin.onFileChange(fname, this.watcher);
+          } catch (error) {
+            console.error(Error);
+          }
         }
       });
     });
