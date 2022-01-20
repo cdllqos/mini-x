@@ -11,7 +11,9 @@ npm install @cdllqos/mini-x
 ```json
 {
     ...
-  "scripts": "mini-x"
+  "scripts": {
+    "start": "mini-x"
+  }
 }
 ```
 ### Run
