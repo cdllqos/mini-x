@@ -1,6 +1,6 @@
 {
   "name": "@cdllqos/mini-x",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A tool for building miniapp more quickly",
   "author": "cdllqos",
   "license": "MIT",
@@ -47,6 +47,9 @@
     "node-html-parser": "^5.2.0",
     "rxjs": "^7.5.1",
     "sass": "^1.48.0"
+  },
+  "peerDependencies": {
+    "regenerator-runtime": "^0.13.9"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

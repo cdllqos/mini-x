@@ -176,6 +176,12 @@ export const getExportContent = (
   packageName: string,
   identifiers: Set<string>,
 ) => {
+  if (!Array.from(identifiers.values()).length) {
+    const importContent = `import lib from '${packageName}';\n`;
+    const exportContent = `export default lib\n`;
+    return importContent + exportContent;
+  }
+
   const importContent = Array.from(identifiers.values()).join(', ');
   const exportContent = Array.from(identifiers.values())
     .map((e) => {
