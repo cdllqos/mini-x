@@ -48,6 +48,9 @@
     "rxjs": "^7.5.1",
     "sass": "^1.48.0"
   },
+  "peerDependencies": {
+    "regenerator-runtime": "^0.13.9"
+  },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
     "@types/fs-extra": "^9.0.13",
