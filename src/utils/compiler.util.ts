@@ -99,6 +99,7 @@ export const getTranspileContent = (fname: string) => {
         syntax: 'typescript',
         tsx: false,
       },
+      target: 'es2022',
     },
     module: {
       type: 'es6',
