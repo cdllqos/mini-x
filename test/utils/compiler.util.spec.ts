@@ -13,7 +13,7 @@ describe('test compiler util', () => {
   it('test compileTs method', () => {
     const fname = pathProxy.resolve(__dirname, 'compiler-test-file.ts');
     const expected = `import { map } from 'rxjs/operators';
-var a = '';
+const a = '';
 console.log('a: ', a);
 console.log('map: ', map);
 `;
